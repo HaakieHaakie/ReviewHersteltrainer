@@ -1,4 +1,8 @@
-<!DOCTYPE HTML>  
+<!DOCTYPE HTML> 
+<?php
+include 'General.php';
+$conn = connectionDB();
+?>
 <html>
     <head>
         <style>
@@ -8,6 +12,28 @@
     <body>  
 
         <?php
+        if (isset($_POST['naam']) &&
+                isset($_POST['achternaam']) &&
+                isset($_POST['email']) &&
+                isset($_POST['review']) &&
+                isset($_POST['beoordeling'])) {
+            $naam = get_post($conn, 'naam');
+            $achternaam = get_post($conn, 'achternaam');
+            $email = get_post($conn, 'email');
+            $review = get_post($conn, 'review');
+            $beoordeling = get_post($conn, 'beoordeling');
+            $query = "INSERT INTO `reviews`"
+                    . "(`naam`, `achternaam`, `email`, `review`, `beoordeling`)"
+                    . " VALUES ('" . $naam . "','" . $achternaam . "','" . $email . "','"
+                    . $review . "','" . $beoordeling . "')";
+            $result = $conn->query($query);
+
+
+
+            if (!$result)
+                echo "INSERT failed: $query<br>" .
+                $conn->error . "<br><br>";
+        }
 // define variables and set to empty values
         $naamErr = $achternaamErr = $emailErr = $beoordelingErr = "";
         $naam = $achternaam = $email = $beoordeling = $review = "";
